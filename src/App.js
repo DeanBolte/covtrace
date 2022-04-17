@@ -1,54 +1,29 @@
-import { useState } from 'react'
+import { useState } from 'react';
+import { BrowserRouter as Router, Switch, Route, withRouter } from "react-router-dom";
+
+import Home from './components/Home';
+import Info from './components/Info';
+import Login from './components/Login';
+import Register from './components/Register';
+import Admin from './components/Admin';
 import Header from "./components/Header";
-import Tasks from "./components/Tasks";
-import AddTask from './components/AddTask';
 
 function App() {
-  const [showAddTask, setShowAddTask] = useState(false)
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      text: 'school',
-      day: 'Feb 5th at 2:30pm',
-      reminder: true,
-    },
-    {
-      id: 2,
-      text: 'doctor',
-      day: 'Feb 5th at 2:30pm',
-      reminder: true,
-    },
-    {
-      id: 3,
-      text: 'lorem i',
-      day: 'Feb 5th at 2:30pm',
-      reminder: true,
-    },
-  ])
-
-  // add task
-  const addTask = (task) => {
-    const id = Math.floor(Math.random() * 1000) + 1
-    const newTask = { id, ...task }
-    setTasks([...tasks, newTask])
-  }
-
-  // delete task
-  const deleteTask = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id))
-  }
-
-  // toggle reminder
-  const toggleReminder = (id) => {
-    setTasks(tasks.map((task) => task.id === id ? { ...task, reminder: !task.reminder } : task))
-  }
 
   return (
-    <div className="container">
-      <Header onAdd={() => setShowAddTask(!showAddTask)} showAdd={showAddTask} />
-      {showAddTask && <AddTask onAdd={addTask} />}
-      {tasks.length > 0 ? <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} /> : 'No Tasks to Show'}
-    </div>
+    <Router>
+      <div className="container">
+        <Header />
+
+        <Switch>
+          <Route exact path={"/"} component={Home} />
+          <Route exact path={"/info"} component={Info} />
+          <Route exact path={"/login"} component={Login} />
+          <Route exact path={"/register"} component={Register} />
+          <Route exact path={"/admin"} component={Admin} />
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
